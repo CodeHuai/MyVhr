@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myhr.mapper.HrMapper">
+
+    <!-- TODO 仿写时按教程改为关联查询 hr_role / role，映射 roles 字段 -->
+    <select id="loadHrByUsername" resultType="com.myhr.model.Hr">
+        select id, name, phone, telephone, address, enabled,
+               username, password, userface, remark
+        from hr
+        where username = #{username}
+    </select>
+
+</mapper>

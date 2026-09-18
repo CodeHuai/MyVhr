@@ -1,0 +1,31 @@
+spring:
+  rabbitmq:
+    username: MrHuai
+    password: 123456
+    host: 127.0.0.1
+    listener:
+      simple:
+        # 邮件发送失败的消息重回队列，避免丢失
+        default-requeue-rejected: true
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password: 123456
+  mail:
+    # TODO 换成你自己的邮箱：QQ 邮箱需要使用授权码（非登录密码），并在邮箱设置中开启 SMTP 服务
+    host: smtp.qq.com
+    port: 465
+    username: yourmail@qq.com
+    password: 你的SMTP授权码
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          debug: false
+  thymeleaf:
+    cache: false
+server:
+  port: 8082
