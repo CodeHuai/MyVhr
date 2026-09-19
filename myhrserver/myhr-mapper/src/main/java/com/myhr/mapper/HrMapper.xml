@@ -3,13 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.myhr.mapper.HrMapper">
+    <resultMap id="BaseResultMap" type="com.myhr.model.Hr">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="phone" property="phone" jdbcType="CHAR"></result>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"></result>
+        <result column="address" property="address" jdbcType="VARCHAR"></result>
+        <result column="enabled" property="enabled" jdbcType="BIT"></result>
+        <result column="username" property="username" jdbcType="VARCHAR"></result>
+        <result column="password" property="password" jdbcType="VARCHAR"></result>
+        <result column="userface" property="userface" jdbcType="VARCHAR"></result>
+        <result column="remark" property="remark" jdbcType="VARCHAR"></result>
+    </resultMap>
 
-    <!-- TODO 仿写时按教程改为关联查询 hr_role / role，映射 roles 字段 -->
-    <select id="loadHrByUsername" resultType="com.myhr.model.Hr">
-        select id, name, phone, telephone, address, enabled,
-               username, password, userface, remark
+
+    <select id="getHrRolesById" resultType="com.myhr.model.Role">
+        select r.*
+        from role as r
+                 inner join hr_role as hrr on r.id = hrr.rid and hrr.hrid = #{id}
+    </select>
+
+    <select id="loadUserByUsername" resultMap="BaseResultMap" parameterType="String">
+        select *
         from hr
         where username = #{username}
     </select>
-
 </mapper>

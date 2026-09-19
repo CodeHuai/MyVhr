@@ -1,16 +1,21 @@
 package com.myhr.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.*;
 
 /**
  * 操作员（对应 vhr 的 Hr 表 hr）
  *
- * TODO 仿写时按教程演进：
- *  1. 增加 roles 字段（List&lt;Role&gt;）并实现 UserDetails，接入 Spring Security 登录
- *  2. 实现 CredentialsContainer，登录后擦除明文密码
  */
-@Data
-public class Hr {
+@Getter
+@Setter
+public class Hr implements UserDetails {
 
     private Long id;
     private String name;
@@ -22,4 +27,51 @@ public class Hr {
     private String password;
     private String userface;
     private String remark;
+    private List<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>(this.roles.size());
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
+    }
+
+    // 账号没有过期
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    // 账号没被锁
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    // 密码没过期
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    // 账号可用
+    @Override
+    public boolean isEnabled() {
+        return this.getEnabled();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hr hr = (Hr) o;
+        return Objects.equals(this.getUsername(), hr.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
 }
