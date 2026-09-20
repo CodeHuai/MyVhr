@@ -3,13 +3,10 @@ package com.myhr.config;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myhr.model.Hr;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +15,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
-    @Autowired
-    private SessionRegistry sessionRegistry;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -58,10 +53,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
                 setDetails(request, authenticationToken);
-
-                Hr hr = new Hr();
-                hr.setUsername(username);
-                sessionRegistry.registerNewSession(request.getSession(true).getId(), hr);
                 return this.getAuthenticationManager().authenticate(authenticationToken);
             }
         } else {

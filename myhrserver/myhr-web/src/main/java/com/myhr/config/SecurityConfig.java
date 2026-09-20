@@ -19,11 +19,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  * Spring Security 基础配置（对应 vhr 的 SecurityConfig）
@@ -80,10 +83,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationManager(authenticationManagerBean());
         loginFilter.setFilterProcessesUrl("/doLogin");
 
-        // 统一账号最多一个会话，第二次登录就触发顶号
-        ConcurrentSessionControlAuthenticationStrategy sessionStrategy = new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
-        sessionStrategy.setMaximumSessions(1);
-        loginFilter.setSessionAuthenticationStrategy(sessionStrategy);
+        // 并发控制：数会话数、踢掉超限的旧会话
+        ConcurrentSessionControlAuthenticationStrategy concurrentStrategy = new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+        concurrentStrategy.setMaximumSessions(1);
+        // 注册：认证成功后把当前会话登记进 SessionRegistry
+        RegisterSessionAuthenticationStrategy registerStrategy = new RegisterSessionAuthenticationStrategy(sessionRegistry());
+        // 组合：先检查再注册
+        loginFilter.setSessionAuthenticationStrategy(new CompositeSessionAuthenticationStrategy(Arrays.asList(concurrentStrategy, registerStrategy)));
 
         return loginFilter;
     }
