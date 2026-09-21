@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myhr.mapper.PositionMapper">
+    <resultMap id="BaseResultMap" type="com.myhr.model.Position">
+        <result property="id" column="id" jdbcType="BIGINT"></result>
+        <result property="name" column="name" jdbcType="VARCHAR"></result>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"></result>
+        <result property="enabled" column="enabled" jdbcType="BIT"></result>
+    </resultMap>
+
+    <select id="getAllPositions" resultMap="BaseResultMap">
+        select *
+        from position
+    </select>
+
+    <insert id="insertSelective" parameterType="com.myhr.model.Position">
+        insert into position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="createDate != null">createDate,</if>
+            <if test="enabled != null">enabled,</if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate, jdbcType=TIMESTAMP},
+            </if>
+            <if test="enabled != null">
+                #{enabled, jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+</mapper>
