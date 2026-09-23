@@ -4,7 +4,7 @@
 
 - vhr 源码（只读参照）：`D:\PersonCodeDir\java\vhr`
 - 前端：直接用 vhr 的 vuehr（`D:\PersonCodeDir\java\vhr\vuehr`）
-- 分阶段任务清单：根目录《仿写清单.md》
+- 分阶段任务清单：`docs/清单.md`
 
 ## 技术栈与版本
 
@@ -68,7 +68,7 @@ mvn spring-boot:run -pl myhrserver/myhr-web
 
 ⚠️ 联调 myhr 时，把 `vuehr/vue.config.js` 里 `/` 和 `/ws` 两条 proxy 的 `target` 从 `localhost:10001` 改成 `localhost:10002`，否则前端请求打到的是原 vhr 后端。
 
-## 进度（对应《仿写清单.md》）
+## 进度（对应 `docs/清单.md`）
 
 - [x] 阶段 0：环境与数据准备
 - [x] 阶段 1：登录与认证
@@ -79,7 +79,7 @@ mvn spring-boot:run -pl myhrserver/myhr-web
 - [ ] 阶段 6：员工管理（含 Excel 导入导出）
 - [ ] 阶段 7：工资账套
 - [ ] 阶段 8：收尾
-- 暂缓：在线聊天（WebSocket）、邮件服务（RabbitMQ + mailserver），启用要点见《仿写清单.md》文末
+- 暂缓：在线聊天（WebSocket）、邮件服务（RabbitMQ + mailserver），启用要点见 `docs/清单.md` 文末
 
 ## 常见问题
 
