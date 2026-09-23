@@ -1,5 +1,6 @@
 package com.myhr.controller.system.basic;
 
+import com.myhr.mapper.PositionMapper;
 import com.myhr.model.Position;
 import com.myhr.model.RespBean;
 import com.myhr.service.PositionService;
@@ -13,6 +14,8 @@ import java.util.List;
 public class PositionController {
     @Autowired
     private PositionService positionService;
+    @Autowired
+    private PositionMapper positionMapper;
 
     @GetMapping("/")
     public List<Position> getAllPositions() {
@@ -23,8 +26,33 @@ public class PositionController {
     public RespBean addPosition(@RequestBody Position position) {
         if (positionService.addPosition(position) == 1) {
             return RespBean.ok("操作成功！");
-        } else {
-            return RespBean.error("操作失败，请联系管理员！");
         }
+        return RespBean.error("操作失败，请联系管理员！");
+    }
+
+    @PutMapping("/")
+    public RespBean updatePositions(@RequestBody Position position) {
+        if (positionService.updateByPrimaryKeySelective(position) == 1) {
+            return RespBean.ok("操作成功！");
+        }
+        return RespBean.error("操作失败，请联系管理员！");
+    }
+
+    @DeleteMapping("/{id}")
+    public RespBean deleteByPrimaryKey(@PathVariable Long id) {
+        Integer primaryKey = positionService.deleteByPrimaryKey(id);
+        if (primaryKey == 1) {
+            return RespBean.ok("操作成功！");
+        }
+        return RespBean.error("操作失败，请联系管理员！");
+    }
+
+    @DeleteMapping("/")
+    public RespBean deletePositionsByIds(List<Long> idList) {
+        Integer inserted = positionService.deletePositionsByIds(idList);
+        if (inserted >= idList.size()) {
+            return RespBean.ok("操作成功！");
+        }
+        return RespBean.error("操作失败，请联系管理员！");
     }
 }

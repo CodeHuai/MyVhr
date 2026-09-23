@@ -8,8 +8,18 @@ import java.util.List;
 @Mapper
 public interface PositionMapper {
     // 查询全部的岗位数据
-    public List<Position> getAllPositions();
+    List<Position> getAllPositions();
 
     // 新增一个position
-    public int insertSelective(Position position);
+    int insertSelective(Position position);
+
+    // 更新操作
+    int updateByPrimaryKeySelective(Position position);
+
+    // 删除操作
+    int deleteByPrimaryKey(Long id);
+
+    // 批量删除操作
+    Integer deletePositionsByIds(List<Long> idList);
+
 }

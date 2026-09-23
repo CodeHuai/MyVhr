@@ -19,12 +19,30 @@ public class PositionService {
     }
 
     // 新增一个pos
-    public int addPosition(Position position) {
+    public Integer addPosition(Position position) {
         // 设置默认的创建时间
         position.setCreateDate(new Date());
         // 设置默认启用状态
         position.setEnabled(true);
-        int inserted = positionMapper.insertSelective(position);
-        return  inserted;
+        Integer inserted = positionMapper.insertSelective(position);
+        return inserted;
+    }
+
+    // 更新
+    public Integer updateByPrimaryKeySelective(Position position) {
+        Integer inserted = positionMapper.updateByPrimaryKeySelective(position);
+        return inserted;
+    }
+
+    // 单个删除
+    public Integer deleteByPrimaryKey(Long id) {
+        Integer inserted = positionMapper.deleteByPrimaryKey(id);
+        return inserted;
+    }
+
+    // 批量删除
+    public Integer deletePositionsByIds(List<Long> idList) {
+        Integer inserted = positionMapper.deletePositionsByIds(idList);
+        return inserted;
     }
 }
