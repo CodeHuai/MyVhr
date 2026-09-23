@@ -40,10 +40,32 @@ call addDep(...,#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEG
 | Double / double | DOUBLE |
 | Float / float | REAL |
 | BigDecimal | DECIMAL |
+| 枚举 Enum | **没有专属 jdbcType**：按名字存 → VARCHAR（默认）；按序号存 → INTEGER（见第 4 节） |
 
 记忆钩子：整数一家按宽度排队——byte < short < int < long 对应 TINYINT < SMALLINT < INTEGER < BIGINT；float 对应的偏偏是 REAL，是个例外，单独记。
 
-## 4. MyBatis 内置别名（javaType 的简写）
+## 4. 枚举类型：JdbcType 里没有 ENUM，形态由 TypeHandler 决定
+
+`java.sql.Types`（也就是 JdbcType 的取值范围）**没有 ENUM 这个值**，枚举落库只有两种形态，选哪个 handler 就长什么样：
+
+| TypeHandler | 落库形态 | 列 / jdbcType | 读回来 |
+|---|---|---|---|
+| `EnumTypeHandler`（**默认**，零配置） | `name()` 字符串，如 "ENABLED" | VARCHAR | `Enum.valueOf(枚举类, 字符串)`——库里的串必须和常量名**完全一致（含大小写）** |
+| `EnumOrdinalTypeHandler` | `ordinal()` 序号 0/1/2 | INTEGER | 按位置取常量；**枚举常量顺序一变（中间插一个/挪一个），历史数据全错位**，慎用 |
+
+- 默认行为：属性/参数类型是枚举，MyBatis 自动挑 EnumTypeHandler，resultMap 和 `#{}` **什么都不用写**
+- 换序号方案或自定义转换时，单点指定 typeHandler：
+
+```xml
+<result property="status" column="status" javaType="com.myhr.model.Status"
+        typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+
+#{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+```
+
+- 通用知识备用：vhr / myhr 源码里目前都没有枚举字段（2026-09-23 核过）
+
+## 5. MyBatis 内置别名（javaType 的简写）
 
 别名大小写不敏感，习惯小写：
 
@@ -61,7 +83,7 @@ call addDep(...,#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEG
 
 原始类型（非包装类）前面加下划线：`_int`→int、`_long`→long、`_boolean`→boolean。
 
-## 5. 大小写惯例
+## 6. 大小写惯例
 
 | 填什么 | 惯例 |
 |---|---|

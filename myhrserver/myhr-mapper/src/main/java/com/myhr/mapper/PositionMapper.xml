@@ -58,7 +58,7 @@
         where id = #{id, jdbcType=BIGINT}
     </delete>
 
-    <delete id="deletePositionsByIds" parameterType="List">
+    <delete id="deletePositionsByIds">
         delete from position where id in
         <foreach collection="idList" item="id" open="(" close=")" separator=",">
             ${id}

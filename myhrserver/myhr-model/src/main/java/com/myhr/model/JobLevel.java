@@ -22,7 +22,7 @@ public class JobLevel implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date createDate;
 
-    private boolean enabled;
+    private Boolean enabled;
 
     @Override
     public boolean equals(Object o) {
