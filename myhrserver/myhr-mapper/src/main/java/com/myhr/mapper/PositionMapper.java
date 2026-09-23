@@ -20,6 +20,5 @@ public interface PositionMapper {
     int deleteByPrimaryKey(Long id);
 
     // 批量删除操作
-    Integer deletePositionsByIds(List<Long> idList);
-
+    Integer deletePositionsByIds(Long[] idList);
 }

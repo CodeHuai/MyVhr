@@ -48,9 +48,9 @@ public class PositionController {
     }
 
     @DeleteMapping("/")
-    public RespBean deletePositionsByIds(List<Long> idList) {
-        Integer inserted = positionService.deletePositionsByIds(idList);
-        if (inserted >= idList.size()) {
+    public RespBean deletePositionsByIds(@RequestParam(value = "ids") Long[] ids) {
+        Integer inserted = positionService.deletePositionsByIds(ids);
+        if (inserted == ids.length) {
             return RespBean.ok("操作成功！");
         }
         return RespBean.error("操作失败，请联系管理员！");

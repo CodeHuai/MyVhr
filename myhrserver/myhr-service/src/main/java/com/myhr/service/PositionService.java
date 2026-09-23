@@ -41,7 +41,7 @@ public class PositionService {
     }
 
     // 批量删除
-    public Integer deletePositionsByIds(List<Long> idList) {
+    public Integer deletePositionsByIds(Long[] idList) {
         Integer inserted = positionMapper.deletePositionsByIds(idList);
         return inserted;
     }

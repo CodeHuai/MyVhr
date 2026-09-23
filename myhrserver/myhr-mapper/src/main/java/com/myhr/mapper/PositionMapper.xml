@@ -59,7 +59,7 @@
     </delete>
 
     <delete id="deletePositionsByIds" parameterType="List">
-        delete from positon and id in
+        delete from position where id in
         <foreach collection="idList" item="id" open="(" close=")" separator=",">
             ${id}
         </foreach>
