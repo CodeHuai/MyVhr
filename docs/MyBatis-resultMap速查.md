@@ -55,6 +55,8 @@ vhr 通用惯例（`xxxWith...` 都是这么长的）：
 | vhr 例子 | Menus2、HrWithRoles、MenuWithRole | DepartmentWithChildren（递归） |
 | 适合 | 层级固定（菜单就两层） | 层级不定（部门树任意深） |
 
+嵌套查询右列的递归机制展开：`部门树递归查询.md`（2026-09-24）
+
 ## 6. 案例复盘：getMenusByHrId 翻车两连（2026-09-20）
 
 同一条 select 上错了两个属性，两段现象：
